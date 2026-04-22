@@ -1,14 +1,14 @@
 /*
 Package cmd handles the ecs subcommands.
-This file defines 'vops ecs list' and 'vops ecs connect'.
+This file defines 'wh ecs list' and 'wh ecs connect'.
 */
 package cmd
 
 import (
 	"fmt"
-	"vops/internal/aws"
-	"vops/internal/ui"
-	"vops/internal/utils"
+	"wormhole/internal/aws"
+	"wormhole/internal/ui"
+	"wormhole/internal/utils"
 	"github.com/spf13/cobra"
 )
 

@@ -10,10 +10,16 @@ The goal is to provide a **premium operational experience** that abstracts the c
 ## 🏗 Architecture & Technology Stack
 Wormhole is built with **Go 2026 stable**, following modern CLI design patterns:
 
-*   **Command Framework**: `github.com/spf13/cobra` (invoked as `wh`).
+*   **Command Framework**: `github.com/spf13/cobra` (industry standard for routing).
 *   **Interactive UX**: `github.com/charmbracelet/huh` (multi-step forms and selection menus).
 *   **Aesthetics**: `github.com/charmbracelet/lipgloss` (rich terminal styling and colors).
 *   **Cloud Logic**: Official `aws-sdk-go-v2` (high-performance, context-aware SDK).
+
+### Directory Structure
+- `cmd/`: Command definitions (Entry points).
+- `internal/aws/`: Low-level AWS service wrappers (ECS, RDS, SSM).
+- `internal/ui/`: Reusable UI components (Selections, Tables).
+- `internal/utils/`: Generic utilities (SSM Tunneling, DB execution).
 
 ---
 
@@ -23,7 +29,7 @@ Wormhole stands out by its ability to "guess" and "discover" connection paths wi
 
 ### 1. Metadata Discovery Hierarchy
 To connect to an RDS, Wormhole follows this strict order of discovery:
-1.  **AWS Resource Tags** (State of the Art): Looks for `vops:credential-path` and `vops:bridge-cluster` on the RDS instance.
+1.  **AWS Resource Tags** (State of the Art): Looks for `wh:credential-path` and `wh:bridge-cluster` on the RDS instance.
 2.  **Manual Mapping**: Checks `internal/aws/mapping.go` for hardcoded overrides.
 3.  **Enhanced Fuzzy Search**: Scans Parameter Store for paths. The algorithm penalizes partial matches and rewards specificity (e.g., distinguishing between `rds` and `web-rds` accurately).
 

@@ -1,6 +1,6 @@
 /*
 Package cmd handles the rds subcommands.
-This file defines 'vops rds list' and 'vops rds connect'.
+This file defines 'wh rds list' and 'wh rds connect'.
 */
 package cmd
 
@@ -9,9 +9,9 @@ import (
 	"math/rand"
 	"strings"
 	"time"
-	"vops/internal/aws"
-	"vops/internal/ui"
-	"vops/internal/utils"
+	"wormhole/internal/aws"
+	"wormhole/internal/ui"
+	"wormhole/internal/utils"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
@@ -135,9 +135,9 @@ var rdsConnCmd = &cobra.Command{
 		var foundPath string
 		var manualBridgeOverride string
 
-		// 1. Discover Credential Path
-		if tagPath, ok := tags["vops:credential-path"]; ok {
-			fmt.Println("✓ Found credential path via resource tags.")
+		// 1. Discover Parameter Path
+		if tagPath, ok := tags["wh:credential-path"]; ok {
+			fmt.Printf("✓ Found credential path via resource tags: %s\n", tagPath)
 			foundPath = tagPath
 		} else if mPath, ok := aws.GetManualPath(selectedRDS); ok {
 			fmt.Println("✓ Using manual mapping for credentials.")
@@ -154,7 +154,7 @@ var rdsConnCmd = &cobra.Command{
 
 		// 2. Discover Bridge Cluster
 		manualBridgeOverride = ""
-		if tagBridge, ok := tags["vops:bridge-cluster"]; ok {
+		if tagBridge, ok := tags["wh:bridge-cluster"]; ok {
 			fmt.Printf("✓ Found bridge cluster via resource tags: %s\n", tagBridge)
 			manualBridgeOverride = tagBridge
 		} else if mBridge, ok := aws.GetManualBridge(selectedRDS); ok {

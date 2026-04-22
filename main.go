@@ -1,10 +1,9 @@
 /*
-Package main is the entry point for the vops CLI.
-It initializes the root command and executes it.
+Package main is the entry point for the Wormhole CLI.
 */
 package main
 
-import "vops/cmd"
+import "wormhole/cmd"
 
 func main() {
 	cmd.Execute()

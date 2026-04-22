@@ -1,4 +1,4 @@
-module vops
+module wormhole
 
 go 1.26.2
 
