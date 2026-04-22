@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -33,4 +34,37 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringVar(&profile, "profile", "veridas-play-ireland", "AWS profile to use")
 	rootCmd.PersistentFlags().StringVar(&region, "region", "eu-west-1", "AWS region to use")
+
+	// Estilos de Lipgloss
+	var (
+		primaryColor = lipgloss.Color("#7D56F4") // Violeta Eléctrico
+		descStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#AAAAAA")).Italic(true)
+		headerStyle  = lipgloss.NewStyle().Foreground(primaryColor).Bold(true)
+	)
+
+	// banner := `...` (comentado a petición del usuario)
+
+	header := descStyle.Render("Secure infrastructure bridge for private cloud resource access via SSM tunneling.")
+
+	rootCmd.SetHelpTemplate(fmt.Sprintf(`%s
+
+%s
+  {{.UseLine}}
+
+%s
+{{if .HasAvailableSubCommands}}{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}  %-12s {{.Short}}
+{{end}}{{end}}{{end}}
+%s
+{{if .HasAvailableLocalFlags}}{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}
+
+%s
+  Use "{{.CommandPath}} [command] --help" for more information about a command.
+`,
+		header,
+		headerStyle.Render("Usage:"),
+		headerStyle.Render("Available Commands:"),
+		"{{rpad .Name .NamePadding }}",
+		headerStyle.Render("Flags:"),
+		lipgloss.NewStyle().Foreground(lipgloss.Color("#555555")).Render("Help:"),
+	))
 }
