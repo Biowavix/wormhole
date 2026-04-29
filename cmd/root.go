@@ -32,8 +32,8 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&profile, "profile", "veridas-play-ireland", "AWS profile to use")
-	rootCmd.PersistentFlags().StringVar(&region, "region", "eu-west-1", "AWS region to use")
+	rootCmd.PersistentFlags().StringVarP(&profile, "profile", "p", "veridas-play-ireland", "AWS profile to use")
+	rootCmd.PersistentFlags().StringVarP(&region, "region", "r", "eu-west-1", "AWS region to use")
 
 	// Estilos de Lipgloss
 	var (
@@ -52,10 +52,13 @@ func init() {
   {{.UseLine}}
 
 %s
-{{if .HasAvailableSubCommands}}{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}  %-12s {{.Short}}
+{{if .HasAvailableSubCommands}}{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}  %s {{.Short}}
 {{end}}{{end}}{{end}}
 %s
-{{if .HasAvailableLocalFlags}}{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}
+{{if .HasAvailableLocalFlags}}{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+%s
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}
 
 %s
   Use "{{.CommandPath}} [command] --help" for more information about a command.
@@ -65,6 +68,7 @@ func init() {
 		headerStyle.Render("Available Commands:"),
 		"{{rpad .Name .NamePadding }}",
 		headerStyle.Render("Flags:"),
+		headerStyle.Render("Global Flags:"),
 		lipgloss.NewStyle().Foreground(lipgloss.Color("#555555")).Render("Help:"),
 	))
 }
